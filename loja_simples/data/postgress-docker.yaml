@@ -9,4 +9,4 @@ services:
         POSTGRES_HOST: postgres
         POSTGRES_DB: loja_simples
       volumes: 
-        - ./dataset:/docker-entrypoint-initdb.d
+        - ./:/docker-entrypoint-initdb.d

@@ -1,10 +1,24 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"html/template"
 	"net/http"
+
+	//Recurso para permitir importações que são utilizadas em runtime
+	_ "github.com/lib/pq"
 )
+
+func conectWithDb() *sql.DB {
+	conectionString := "user=root dbname=loja_simples password=root host=postgre sslmode=disable"
+	db, err := sql.Open("postgres", conectionString)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return db
+}
 
 type Produto struct {
 	Nome       string
@@ -18,10 +32,12 @@ type Produto struct {
 var temp = template.Must(template.ParseGlob("templates/*html"))
 
 func main() {
-	porta := 8000
-
+	db := conectWithDb()
+	defer db.Close()
 	//Função para definir a URL que vamos responder e qual a função de resposta
 	http.HandleFunc("/", index)
+
+	porta := 8000
 	fmt.Println("Servidor inicilizado em porta", porta)
 	http.ListenAndServe(fmt.Sprint(":", porta), nil)
 }
