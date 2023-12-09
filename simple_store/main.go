@@ -11,7 +11,7 @@ import (
 )
 
 func conectWithDb() *sql.DB {
-	conectionString := "user=root dbname=loja_simples password=root host=postgre sslmode=disable"
+	conectionString := "host=localhost user=root password=root dbname=simple_store port=5432 sslmode=disable"
 	db, err := sql.Open("postgres", conectionString)
 	if err != nil {
 		panic(err.Error())
@@ -21,6 +21,7 @@ func conectWithDb() *sql.DB {
 }
 
 type Produto struct {
+	Id         int
 	Nome       string
 	Descricao  string
 	Preco      float64
@@ -32,8 +33,6 @@ type Produto struct {
 var temp = template.Must(template.ParseGlob("templates/*html"))
 
 func main() {
-	db := conectWithDb()
-	defer db.Close()
 	//Função para definir a URL que vamos responder e qual a função de resposta
 	http.HandleFunc("/", index)
 
@@ -43,11 +42,30 @@ func main() {
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
-	produtos := []Produto{
-		{Nome: "Camiseta", Descricao: "Azul, bem bonita", Preco: 39.90, Quantidade: 5},
-		{"Tênis", "Ortopédico e confortável", 89.60, 3},
-		{"Fone", "Sem fio e muito bom", 59, 2},
-		{"Produto novo", "Muito legal", 1.99, 2}}
+	produtos := []Produto{}
+	db := conectWithDb()
+	defer db.Close()
+	selectProducts, err := db.Query("select * from produtos")
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for selectProducts.Next() {
+		var id, quantidade int
+		var nome, descricao string
+		var preco float64
+
+		err = selectProducts.Scan(&id, &nome, &descricao, &preco, &quantidade)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		p := Produto{Nome: nome, Descricao: descricao, Preco: preco, Quantidade: quantidade}
+
+		produtos = append(produtos, p)
+	}
 
 	temp.ExecuteTemplate(w, "Index", produtos)
 }
