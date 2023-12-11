@@ -1,0 +1,15 @@
+services:
+  
+    db:
+      image: postgres:latest
+      restart: always
+      container_name: storeapp_db
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: root
+        POSTGRES_HOST: docker.for.win.localhost
+        POSTGRES_DB: storeapp
+      ports:
+        - 5432:5432
+      volumes: 
+        - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql
