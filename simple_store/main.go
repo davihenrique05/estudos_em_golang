@@ -10,7 +10,7 @@ func main() {
 
 	routes.LoadRoutes()
 
-	porta := 8000
-	fmt.Println("Servidor inicilizado em porta", porta)
-	http.ListenAndServe(fmt.Sprint(":", porta), nil)
+	port := 8000
+	fmt.Println("The server is initialized on port", port)
+	http.ListenAndServe(fmt.Sprint(":", port), nil)
 }
