@@ -1,11 +1,11 @@
-CREATE TABLE produtos (
+CREATE TABLE products (
     id serial primary key,
-    nome varchar,
-    descricao TEXT,
-    preco decimal,
-    quantidade integer
+    name varchar,
+    description TEXT,
+    price decimal,
+    quantity integer
 );
 
-INSERT INTO produtos (nome, descricao, preco, quantidade) values 
-('Camiseta', 'Preta', 19.90, 10),
-('Fone', 'Muito bom', 99.00, 5);
+INSERT INTO products (name, description, price, quantity) values 
+('T-shirt', 'Black', 19.90, 10),
+('Headphone', 'Better than avarage', 99.00, 5);
