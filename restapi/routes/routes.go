@@ -4,12 +4,15 @@ import (
 	"log"
 	"net/http"
 	"restapi/controllers"
+	"restapi/middleware"
 
 	"github.com/gorilla/mux"
 )
 
 func HandleRequest() {
 	r := mux.NewRouter()
+
+	r.Use(middleware.ContentTypeMiddleware)
 
 	r.HandleFunc("/", controllers.Home)
 	r.HandleFunc("/api/celebrities", controllers.GetAllCelebrities).Methods("Get")
