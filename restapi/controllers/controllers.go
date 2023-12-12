@@ -36,3 +36,21 @@ func CreatNewCelebrity(w http.ResponseWriter, r *http.Request) {
 	database.DB.Create(&newCelebrity)
 	json.NewEncoder(w).Encode(newCelebrity)
 }
+
+func DeleteCelebrity(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	var celebrity models.Celebrity
+	database.DB.Delete(&celebrity, id)
+	json.NewEncoder(w).Encode(celebrity)
+}
+
+func UpdateCelebrity(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	var celebrity models.Celebrity
+	database.DB.First(&celebrity, id)
+	json.NewDecoder(r.Body).Decode(&celebrity)
+	database.DB.Save(&celebrity)
+	json.NewEncoder(w).Encode(celebrity)
+}
