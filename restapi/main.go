@@ -2,15 +2,13 @@ package main
 
 import (
 	"fmt"
-	"restapi/models"
+	"restapi/database"
 	"restapi/routes"
 )
 
 func main() {
-	models.Celebrities = []models.Celebrity{
-		{Name: "Nome 1", Biography: "Very sad background"},
-		{Name: "Nome 2", Biography: "Very sad background"},
-	}
+
+	database.ConnectWithDatabase()
 
 	fmt.Println("Initializing server...")
 	routes.HandleRequest()

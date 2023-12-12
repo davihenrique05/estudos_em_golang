@@ -4,10 +4,15 @@ import (
 	"log"
 	"net/http"
 	"restapi/controllers"
+
+	"github.com/gorilla/mux"
 )
 
 func HandleRequest() {
-	http.HandleFunc("/", controllers.Home)
-	http.HandleFunc("/celebrities", controllers.GetAllCelebrities)
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	r := mux.NewRouter()
+
+	r.HandleFunc("/", controllers.Home)
+	r.HandleFunc("/celebrities", controllers.GetAllCelebrities).Methods("Get")
+	r.HandleFunc("/celebrities/{id}", controllers.GetCelebrityById).Methods("Get")
+	log.Fatal(http.ListenAndServe(":8000", r))
 }
