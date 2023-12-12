@@ -15,11 +15,11 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllCelebrities(w http.ResponseWriter, r *http.Request) {
-	var p []models.Celebrity
+	var celebrities []models.Celebrity
 
-	database.DB.Find(&p)
+	database.DB.Find(&celebrities)
 
-	json.NewEncoder(w).Encode(p)
+	json.NewEncoder(w).Encode(celebrities)
 }
 
 func GetCelebrityById(w http.ResponseWriter, r *http.Request) {
@@ -28,4 +28,11 @@ func GetCelebrityById(w http.ResponseWriter, r *http.Request) {
 	var celebrity models.Celebrity
 	database.DB.First(&celebrity, id)
 	json.NewEncoder(w).Encode(celebrity)
+}
+
+func CreatNewCelebrity(w http.ResponseWriter, r *http.Request) {
+	var newCelebrity models.Celebrity
+	json.NewDecoder(r.Body).Decode(&newCelebrity)
+	database.DB.Create(&newCelebrity)
+	json.NewEncoder(w).Encode(newCelebrity)
 }
