@@ -91,7 +91,7 @@ func UpdateStudent(c *gin.Context) {
 		return
 	}
 
-	database.DB.Model(&student).UpdateColumns(student)
+	database.DB.Save(&student)
 	c.JSON(http.StatusOK, student)
 }
 
