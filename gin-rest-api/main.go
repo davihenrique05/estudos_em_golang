@@ -5,6 +5,8 @@ import (
 	"gin-rest-api/routes"
 )
 
+// @title Studente API
+// @version 1.0
 func main() {
 	database.ConnectWithDatabase()
 

@@ -1,0 +1,190 @@
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  httputil.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
+  models.Student:
+    properties:
+      cpf:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      name:
+        type: string
+      rg:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+info:
+  contact: {}
+  title: Studente API
+  version: "1.0"
+paths:
+  /api/students:
+    delete:
+      consumes:
+      - application/json
+      description: Receive and ID and remove the student information from the database
+      parameters:
+      - description: Used to find the student
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Delete student information
+      tags:
+      - students
+    get:
+      consumes:
+      - application/json
+      description: Access database to retrieve all students
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Student'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      tags:
+      - students
+    patch:
+      consumes:
+      - application/json
+      description: Receive and update the information of given student
+      parameters:
+      - description: Used to find the student
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: Student Information
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/models.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Student'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Update student information
+      tags:
+      - students
+    post:
+      consumes:
+      - application/json
+      description: Create and add a new student to the database
+      parameters:
+      - description: Student Information
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/models.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Student'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Create a new Student
+      tags:
+      - students
+  /api/students/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Receive the student ID and return his information
+      parameters:
+      - description: Used to find the student
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Student'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Find a student by ID and return the information information
+      tags:
+      - students
+  /api/students/cpf/{cpf}:
+    get:
+      consumes:
+      - application/json
+      description: Receive the student CPF and return his information
+      parameters:
+      - description: Used to find the student
+        in: path
+        name: cpf
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Student'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Find a student by CPF and return the information information
+      tags:
+      - students
+swagger: "2.0"

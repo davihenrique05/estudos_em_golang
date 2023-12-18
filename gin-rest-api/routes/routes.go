@@ -3,13 +3,21 @@ package routes
 import (
 	"gin-rest-api/controllers"
 
+	docs "gin-rest-api/docs"
+
 	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func HandleRequests() {
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*")
 	r.Static("/assets", "./assets")
+
+	docs.SwaggerInfo.BasePath = "/"
+	docs.SwaggerInfo.Version = "1"
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	r.GET("/", controllers.ShowIndex)
 
