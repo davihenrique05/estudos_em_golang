@@ -105,3 +105,17 @@ func DeleteStudent(c *gin.Context) {
 		"message": "Student removed successfully",
 	})
 }
+
+func ShowIndex(c *gin.Context) {
+	var students []models.Student
+
+	database.DB.Find(&students)
+
+	c.HTML(http.StatusOK, "index.html", gin.H{
+		"students": students,
+	})
+}
+
+func NotFoundRoute(c *gin.Context) {
+	c.HTML(http.StatusNotFound, "404.html", nil)
+}
